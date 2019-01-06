@@ -2,10 +2,21 @@
     "name": "smeetherson-discord-bot",
     "version": "1.0.0",
     "description": "General purpose discord bot",
-    "main": "bot.js",
     "author": "Dan Bjorge <dbjorge@gmail.com>",
+    "main": "dist/index.js",
+    "scripts": {
+        "watch": "node_modules/.bin/tsc -w",
+        "build": "node_modules/.bin/tsc",
+        "start": "node dist/index.js"
+    },
     "dependencies": {
-        "discord.io": "^2.5.3",
-        "winston": "^3.1.0"
+        "discord.js": "^11.4.2",
+        "lodash": "^4.17.11"
+    },
+    "devDependencies": {
+        "@types/lodash": "^4.14.119",
+        "@types/node": "^10.12.18",
+        "tslint": "^5.12.0",
+        "typescript": "^3.2.2"
     }
 }
