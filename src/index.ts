@@ -37,7 +37,7 @@ bot.on('message', msg => {
             };
 
             msg.reply(
-`Playing codenames at https://horsepaste.com/buttdestroyer with teams:
+`Playing codenames at https://hackervoiceim.in/buttdestroyer with teams:
 
 :red_circle: **Red team** :red_circle:
 ${format_team_list(red_team_players)}
