@@ -1,0 +1,1 @@
+botworker: yarn start
