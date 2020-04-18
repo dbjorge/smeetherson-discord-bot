@@ -1,1 +1,1 @@
-botworker: yarn start
+web: yarn start
