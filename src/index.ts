@@ -10,11 +10,21 @@ if (token === undefined) {
 var bot = new Discord.Client();
 var log = console.log;
 
-bot.on('ready', () => {
-    log(`Logged in as ${bot.user.tag}`);
-});
+const wrapEntry = (fn) => {
+    return (arg) => {
+        try {
+            fn(arg);
+        } catch (e) {
+            console.error('ERROR: ' + e);
+        }
+    };
+};
 
-bot.on('message', msg => {
+bot.on('ready', wrapEntry(() => {
+    log(`Logged in as ${bot.user.tag}`);
+}));
+
+bot.on('message', wrapEntry(msg => {
     //log(util.inspect(msg));
     if (msg.channel.type !== 'text') {
         return;
@@ -58,6 +68,6 @@ ${format_team_list(red_team_players)}
 ${format_team_list(blue_team_players)}`);
         }
     }
-});
+}));
 
 bot.login(token);
