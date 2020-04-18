@@ -1,8 +1,9 @@
 {
     "name": "smeetherson-discord-bot",
+    "license": "MIT",
     "version": "1.0.0",
-    "description": "General purpose discord bot",
-    "author": "Dan Bjorge <dbjorge@gmail.com>",
+    "description": "Smeetherson: a discord bot for Dan's specific needs",
+    "author": "Dan Bjorge <dan@dbjorge.net>",
     "main": "dist/index.js",
     "scripts": {
         "watch": "node_modules/.bin/tsc -w",
