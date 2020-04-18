@@ -1,5 +1,6 @@
 import * as Discord from 'discord.js';
 import * as lodash from 'lodash';
+import * as util from 'util';
 
 export interface IAuthConfig {
     token: string
@@ -15,6 +16,18 @@ bot.on('ready', () => {
 });
 
 bot.on('message', msg => {
+    //log(util.inspect(msg));
+    if (msg.channel.type !== 'text') {
+        return;
+    }
+    const channel = msg.channel as Discord.TextChannel;
+
+    if (channel.name === 'pog-battle') {
+        log('adding votes to pog battle');
+        msg.react('👈').then(() => msg.react('👉'));
+        return;
+    }
+
     switch(msg.content) {
         case '!smeetherson_ping': {
             log(`Received ping message: ${msg}`);
@@ -24,12 +37,12 @@ bot.on('message', msg => {
         case '!codenames': {
             log(`Received !codenames request`);
             var players = msg.member.voiceChannel.members;
-            
+
             var red_team_size = Math.ceil(players.size / 2);
-            
+
             var red_team_players = players.random(red_team_size);
             var blue_team_players = players.filter(p => !red_team_players.some(rtp => rtp.id === p.id)).array();
-            
+
             function format_team_list(players: Discord.GuildMember[]): string {
                 return lodash.join(
                     players.map(p => `* <@${p.user.id}>`),
