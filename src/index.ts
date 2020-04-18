@@ -1,12 +1,11 @@
 import * as Discord from 'discord.js';
 import * as lodash from 'lodash';
-import * as util from 'util';
+import * as process from 'process';
 
-export interface IAuthConfig {
-    token: string
+let token: string | undefined = process.env['DISCORD_AUTH_TOKEN'];
+if (token === undefined) {
+    token = require("../auth.json").token;
 }
-
-var authConfig = require('../auth.json') as IAuthConfig;
 
 var bot = new Discord.Client();
 var log = console.log;
@@ -61,4 +60,4 @@ ${format_team_list(blue_team_players)}`);
     }
 });
 
-bot.login(authConfig.token);
+bot.login(token);
