@@ -8,7 +8,8 @@
     "scripts": {
         "watch": "node_modules/.bin/tsc -w",
         "build": "node_modules/.bin/tsc",
-        "start": "node dist/index.js"
+        "start": "node dist/index.js",
+        "format": "prettier"
     },
     "dependencies": {
         "discord.js": "^11.4.2",
@@ -17,7 +18,7 @@
     "devDependencies": {
         "@types/lodash": "^4.14.119",
         "@types/node": "^10.12.18",
-        "tslint": "^5.12.0",
+        "prettier": "^2.0.4",
         "typescript": "^3.2.2"
     }
 }

@@ -9,7 +9,5 @@
         "noImplicitThis": true,
         "inlineSourceMap": true
     },
-    "include": [
-        "src"
-    ]
+    "include": ["src"]
 }
