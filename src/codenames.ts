@@ -8,7 +8,11 @@ export async function handleCodenamesCommand(msg: Message): Promise<void> {
         ? 'horsepaste.com'
         : 'hackervoiceim.in';
 
-    var players = msg.member.voiceChannel.members;
+    var players = msg.member?.voice?.channel?.members;
+    if (players == null) {
+        log('Ignoring !codenames from member not in voice channel')
+        return;
+    }
 
     var red_team_size = Math.ceil(players.size / 2);
 

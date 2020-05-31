@@ -17,7 +17,7 @@ if (token === undefined) {
 var bot = new Discord.Client();
 
 bot.on('ready', () => {
-    log(`Logged in as ${bot.user.tag}`);
+    log(`Logged in as ${bot.user?.tag}`);
 });
 
 registerCommandHandler(bot, '!smeetherson_ping', (m) => m.reply('Pong!'));

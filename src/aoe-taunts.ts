@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as util from 'util';
 import { log } from './logging';
-import { Message, StreamDispatcher, VoiceChannel, VoiceConnection } from 'discord.js';
+import { Message, VoiceConnection } from 'discord.js';
 
 const tauntsFolder = path.join(__dirname, '..', 'resources', 'aoe-taunts');
 
@@ -11,7 +11,7 @@ const sleepAsync = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function playFileAsync(connection: VoiceConnection, file: string): Promise<void> {
     return new Promise((resolve, reject) => {
-        const dispatcher = connection.playFile(file);
+        const dispatcher = connection.play(file);
 
         dispatcher.on('end', resolve);
         dispatcher.on('error', reject);
@@ -35,7 +35,7 @@ export async function handleAoeTauntMessage(msg: Message): Promise<void> {
         return;
     }
 
-    const voiceChannel = msg.member.voiceChannel;
+    const voiceChannel = msg?.member?.voice?.channel;
     if (voiceChannel == null) {
         log(`Ignoring ${tauntNumber}: sender not in voice channel`);
         return;
