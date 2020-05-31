@@ -17,11 +17,16 @@ export function registerMessageHandler(
 
 export function registerCommandHandler(
     bot: Discord.Client,
-    command: string,
+    command: string | RegExp,
     handler: (msg: Discord.Message) => Promise<any>,
 ) {
+    const contentMatches =
+        command instanceof RegExp
+            ? command.test
+            : (c: string) => c.startsWith(command);
+
     registerMessageHandler(bot, async (msg) => {
-        if (msg.content.startsWith(command)) {
+        if (contentMatches(msg.content)) {
             log(`Triggering command handler for ${command}`);
             await handler(msg);
         }

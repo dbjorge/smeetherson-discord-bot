@@ -7,6 +7,7 @@ import {
 } from './register-handler';
 import { handleCodenamesCommand } from './codenames';
 import { handlePogBattleMessage } from './pog-battle';
+import { handleAoeTauntCommand } from './aoe-taunts';
 
 let token: string | undefined = process.env['DISCORD_AUTH_TOKEN'];
 if (token === undefined) {
@@ -21,6 +22,7 @@ bot.on('ready', () => {
 
 registerCommandHandler(bot, '!smeetherson_ping', (m) => m.reply('Pong!'));
 registerCommandHandler(bot, '!codenames', handleCodenamesCommand);
+registerCommandHandler(bot, /^\d+/, handleAoeTauntCommand);
 registerMessageHandler(bot, handlePogBattleMessage);
 
 bot.login(token);
