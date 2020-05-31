@@ -7,6 +7,7 @@ import { Message, StreamDispatcher, VoiceChannel, VoiceConnection } from 'discor
 const tauntsFolder = path.join(__dirname, '..', 'resources', 'aoe-taunts');
 
 const existsAsync = util.promisify(fs.exists);
+const sleepAsync = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 async function playFileAsync(connection: VoiceConnection, file: string): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -44,6 +45,7 @@ export async function handleAoeTauntMessage(msg: Message): Promise<void> {
     const connection = await voiceChannel.join();
     try {
         await playFileAsync(connection, tauntFile);
+        await sleepAsync(3000);
     } finally {
         log('Disconnecting voice');
         await connection.disconnect();
