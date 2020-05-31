@@ -2,11 +2,20 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as util from 'util';
 import { log } from './logging';
-import { Message } from 'discord.js';
+import { Message, StreamDispatcher, VoiceChannel, VoiceConnection } from 'discord.js';
 
 const tauntsFolder = path.join(__dirname, '..', 'resources', 'aoe-taunts');
 
 const existsAsync = util.promisify(fs.exists);
+
+async function playFileAsync(connection: VoiceConnection, file: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+        const dispatcher = connection.playFile(file);
+
+        dispatcher.on('end', resolve);
+        dispatcher.on('error', reject);
+    });
+}
 
 export async function handleAoeTauntMessage(msg: Message): Promise<void> {
     const tauntNumberMatches = /^\d+/.exec(msg.content);
@@ -31,11 +40,12 @@ export async function handleAoeTauntMessage(msg: Message): Promise<void> {
         return;
     }
 
-    log(`Playing taunt file: ${tauntFile}`);
+    log(`Connecting and playing taunt file: ${tauntFile}`);
     const connection = await voiceChannel.join();
-    const dispatcher = connection.playFile(tauntFile);
-
-    dispatcher.on('finish', () => {
-        log(`Finished playing taunt file ${tauntFile}`);
-    });
+    try {
+        await playFileAsync(connection, tauntFile);
+    } finally {
+        log('Disconnecting voice');
+        await connection.disconnect();
+    }
 }
