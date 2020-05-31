@@ -8,32 +8,30 @@ const tauntsFolder = path.join(__dirname, '..', 'resources', 'aoe-taunts');
 
 const existsAsync = util.promisify(fs.exists);
 
-export async function handleAoeTauntCommand(msg: Message): Promise<void> {
-    log(`Received number message, interpreting as AOE taunt`);
-
-    const matches = /^(\d+)/.exec(msg.content);
-    if (matches == null || matches.length < 2) {
-        log(
-            'Confusing; received aoe taunt message that doesnt parse. Ignoring.',
-        );
+export async function handleAoeTauntMessage(msg: Message): Promise<void> {
+    const tauntNumberMatches = /^\d+/.exec(msg.content);
+    if (tauntNumberMatches == null) {
         return;
     }
-    const tauntNumber = matches[1];
+
+    log(`Considering AOE taunt response for ${msg.content}`)
+
+    const tauntNumber = parseInt(tauntNumberMatches[0]);
     const tauntFilename = `${tauntNumber}.mp3`;
     const tauntFile = path.join(tauntsFolder, tauntFilename);
 
     if (!(await existsAsync(tauntFile))) {
-        log('Nonexistent taunt file; ignoring');
+        log(`Ignoring ${tauntNumber}: no taunt file`);
         return;
     }
 
     const voiceChannel = msg.member.voiceChannel;
     if (voiceChannel == null) {
-        log('Sender not in a voice channel; ignoring');
+        log(`Ignoring ${tauntNumber}: sender not in voice channel`);
         return;
     }
 
-    log(`Playing taunt file ${tauntFile}`);
+    log(`Playing taunt file: ${tauntFile}`);
     const connection = await voiceChannel.join();
     const dispatcher = connection.playFile(tauntFile);
 
