@@ -12,6 +12,7 @@
         "format": "prettier"
     },
     "dependencies": {
+        "@discordjs/opus": "^0.3.2",
         "discord.js": "^11.6.4",
         "lodash": "^4.17.15"
     },
