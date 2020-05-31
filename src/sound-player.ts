@@ -7,7 +7,7 @@ async function playFileAsync(connection: VoiceConnection, file: string): Promise
     return new Promise((resolve, reject) => {
         const dispatcher = connection.play(file);
 
-        dispatcher.on('end', resolve);
+        dispatcher.on('finish', resolve);
         dispatcher.on('error', reject);
     });
 }
