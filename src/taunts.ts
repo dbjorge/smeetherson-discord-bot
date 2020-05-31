@@ -5,17 +5,17 @@ import { log } from './logging';
 import { Message } from 'discord.js';
 import { playSoundFileAsync } from './sound-player';
 
-const tauntsFolder = path.join(__dirname, '..', 'resources', 'aoe-taunts');
+const tauntsFolder = path.join(__dirname, '..', 'resources', 'taunts');
 
 const existsAsync = util.promisify(fs.exists);
 
-export async function handleAoeTauntMessage(msg: Message): Promise<void> {
+export async function handleTauntMessage(msg: Message): Promise<void> {
     const tauntNumberMatches = /^\d+/.exec(msg.content);
     if (tauntNumberMatches == null) {
         return;
     }
 
-    log(`Considering AOE taunt response for ${msg.content}`)
+    log(`Considering taunt response for ${msg.content}`)
 
     const tauntNumber = parseInt(tauntNumberMatches[0]);
     const tauntFilename = `${tauntNumber}.mp3`;
