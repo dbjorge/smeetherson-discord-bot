@@ -45,7 +45,7 @@ export async function handleAoeTauntMessage(msg: Message): Promise<void> {
     const connection = await voiceChannel.join();
     try {
         await playFileAsync(connection, tauntFile);
-        await sleepAsync(3000);
+        // await sleepAsync(3000);
     } finally {
         log('Disconnecting voice');
         await connection.disconnect();
