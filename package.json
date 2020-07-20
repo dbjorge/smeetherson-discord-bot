@@ -14,7 +14,7 @@
     "dependencies": {
         "@discordjs/opus": "^0.3.2",
         "discord.js": "^12.2.0",
-        "lodash": "^4.17.15"
+        "lodash": "^4.17.19"
     },
     "devDependencies": {
         "@types/lodash": "^4.14.154",
