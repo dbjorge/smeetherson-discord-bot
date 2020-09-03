@@ -4,9 +4,7 @@ import { Message, GuildMember } from 'discord.js';
 
 export async function handleCodenamesCommand(msg: Message): Promise<void> {
     log(`Received !codenames request`);
-    const codenamesDomain = msg.content.includes('horse')
-        ? 'horsepaste.com'
-        : 'hackervoiceim.in';
+    const codenamesDomain = 'horsepaste.com';
 
     var players = msg.member?.voice?.channel?.members;
     if (players == null) {
