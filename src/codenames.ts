@@ -1,14 +1,34 @@
 import { join } from 'lodash';
 import { log } from './logging';
-import { Message, GuildMember } from 'discord.js';
+import { ApplicationCommandData, CommandInteraction, GuildMember } from 'discord.js';
 
-export async function handleCodenamesCommand(msg: Message): Promise<void> {
-    log(`Received !codenames request`);
-    const codenamesDomain = 'horsepaste.com';
+const defaultServer = 'horsepaste.com';
+const defaultGameid = 'buttdestroyer';
+
+export const codenamesCommand: ApplicationCommandData = {
+    name: 'codenames',
+    description: 'Splits your current voice channel members into two teams for a game of Codenames',
+    options: [{
+        name: 'gameid',
+        type: 'STRING',
+        description: `The game ID (name part of the URL) (by default, ${defaultGameid})`,
+        required: false,
+    }, {
+        name: 'server',
+        type: 'STRING',
+        description: `The codenames domain (by default, ${defaultServer})`,
+        required: false,
+    }]
+};
+
+export async function handleCodenamesCommand(msg: CommandInteraction): Promise<void> {
+    log(`Received /codenames request`);
+    const gameid = msg.options.filter(o => o.name === 'gameid')?.value || defaultGameid;
+    const server = msg.options.filter(o => o.name === 'server')?.value || defaultServer;
 
     var players = msg.member?.voice?.channel?.members;
     if (players == null) {
-        log('Ignoring !codenames from member not in voice channel')
+        log('Ignoring /codenames from member not in voice channel')
         return;
     }
 
@@ -27,7 +47,7 @@ export async function handleCodenamesCommand(msg: Message): Promise<void> {
     }
 
     await msg.reply(
-        `Playing codenames at https://${codenamesDomain}/buttdestroyer with teams:
+        `Playing codenames at https://${server}/${gameid} with teams:
 
 :red_circle: **Red team** :red_circle:
 ${format_team_list(red_team_players)}
