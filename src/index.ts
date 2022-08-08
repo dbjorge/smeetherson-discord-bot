@@ -14,14 +14,19 @@ if (token === undefined) {
     token = require('../auth.json').token;
 }
 
-var bot = new Discord.Client();
+var bot = new Discord.Client({
+    intents: [
+        Discord.GatewayIntentBits.GuildMessages,
+        Discord.GatewayIntentBits.MessageContent,
+    ],
+});
 
 bot.on('ready', () => {
     log(`Logged in as ${bot.user?.tag}`);
 });
 
-registerCommandHandler(bot, '!smeetherson_ping', (m) => m.reply('Pong!'));
-registerCommandHandler(bot, '!codenames', handleCodenamesCommand);
+registerCommandHandler(bot, 'smeetherson_ping', (m) => m.reply('Pong!'));
+registerCommandHandler(bot, 'codenames', handleCodenamesCommand);
 registerMessageHandler(bot, handleTauntMessage);
 registerMessageHandler(bot, handlePogBattleMessage);
 

@@ -6,7 +6,7 @@ export function registerMessageHandler(
     bot: Discord.Client,
     handler: (msg: Discord.Message) => Promise<any>,
 ) {
-    bot.on('message', async (msg) => {
+    bot.on('messageCreate', async (msg) => {
         try {
             await handler(msg);
         } catch (e) {
@@ -20,9 +20,11 @@ export function registerCommandHandler(
     command: string,
     handler: (msg: Discord.Message) => Promise<any>,
 ) {
+    const bangCommand = `!${command}`;
+
     registerMessageHandler(bot, async (msg) => {
-        if (msg.content.startsWith(command)) {
-            log(`Triggering command handler for ${command}`);
+        if (msg.content.startsWith(bangCommand)) {
+            log(`Triggering command handler for ${bangCommand}`);
             await handler(msg);
         }
     });

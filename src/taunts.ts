@@ -15,7 +15,7 @@ export async function handleTauntMessage(msg: Message): Promise<void> {
         return;
     }
 
-    log(`Considering taunt response for ${msg.content}`)
+    log(`Considering taunt response for ${msg.content}`);
 
     const tauntNumber = parseInt(tauntNumberMatches[0]);
     const tauntFilename = `${tauntNumber}.mp3`;

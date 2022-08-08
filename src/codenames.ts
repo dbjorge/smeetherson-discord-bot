@@ -8,16 +8,17 @@ export async function handleCodenamesCommand(msg: Message): Promise<void> {
 
     var players = msg.member?.voice?.channel?.members;
     if (players == null) {
-        log('Ignoring !codenames from member not in voice channel')
+        log('Ignoring !codenames from member not in voice channel');
         return;
     }
 
     var red_team_size = Math.ceil(players.size / 2);
 
     var red_team_players = players.random(red_team_size);
-    var blue_team_players = players
-        .filter((p) => !red_team_players.some((rtp) => rtp.id === p.id))
-        .array();
+    var blue_team_player_collection = players.filter(
+        (p) => !red_team_players.some((rtp) => rtp.id === p.id),
+    );
+    var blue_team_players = [...blue_team_player_collection.values()];
 
     function format_team_list(players: GuildMember[]): string {
         return join(

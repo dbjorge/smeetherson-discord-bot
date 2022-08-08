@@ -1,13 +1,13 @@
 import { log } from './logging';
-import { Message, TextChannel } from 'discord.js';
+import { ChannelType, Message, TextChannel } from 'discord.js';
 
 // returns without # prefix
 function channelName(msg: Message): string | null {
-    if (msg.channel.type !== 'text') {
+    if (msg.channel.type !== ChannelType.GuildText) {
         return null;
     }
-    const channel = msg.channel as TextChannel;
-    return channel.name;
+
+    return msg.channel.name;
 }
 
 export async function handlePogBattleMessage(msg: Message): Promise<void> {
