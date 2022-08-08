@@ -34,6 +34,6 @@ export async function handleCodenamesCommand(msg: Message): Promise<void> {
 ${format_team_list(red_team_players)}
 
 :blue_heart: **Blue team** :blue_heart:
-${format_team_list(blue_team_players)}`
+${format_team_list(blue_team_players)}`,
     });
 }

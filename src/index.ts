@@ -20,6 +20,14 @@ var bot = new Discord.Client({
         // messages before it has sent one itself. See
         // https://stackoverflow.com/a/70087792
         Discord.GatewayIntentBits.Guilds,
+
+        // Required to send voice audio (without this, the bot can't
+        // detect when the voice channel becomes ready to receive audio)
+        Discord.GatewayIntentBits.GuildVoiceStates,
+
+        // Required to receive messages. We use these over slash commands
+        // because we want the bot to support aoe-style taunts, where the
+        // user just has to say "1" and not "/1"
         Discord.GatewayIntentBits.GuildMessages,
         Discord.GatewayIntentBits.DirectMessages,
         Discord.GatewayIntentBits.MessageContent,
@@ -28,14 +36,16 @@ var bot = new Discord.Client({
         Discord.Partials.Message,
         Discord.Partials.Channel,
         Discord.Partials.Reaction,
-    ]
+    ],
 });
 
 bot.on('ready', () => {
     log(`Logged in as ${bot.user?.tag}`);
 });
 
-registerCommandHandler(bot, 'smeetherson_ping', (m) => m.reply({ content: 'Pong!' }));
+registerCommandHandler(bot, 'smeetherson_ping', (m) =>
+    m.reply({ content: 'Pong!' }),
+);
 registerCommandHandler(bot, 'codenames', handleCodenamesCommand);
 registerMessageHandler(bot, handleTauntMessage);
 registerMessageHandler(bot, handlePogBattleMessage);

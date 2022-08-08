@@ -3,10 +3,10 @@ import {
     AudioPlayerStatus,
     createAudioPlayer,
     createAudioResource,
+    entersState,
     joinVoiceChannel,
     NoSubscriberBehavior,
     VoiceConnection,
-    VoiceConnectionState,
     VoiceConnectionStatus,
 } from '@discordjs/voice';
 import { log } from './logging';
@@ -17,14 +17,17 @@ async function playFileAsync(
     connection: VoiceConnection,
     file: string,
 ): Promise<void> {
-    const audioPlayer = createAudioPlayer({
-        behaviors: {
-            noSubscriber: NoSubscriberBehavior.Stop,
-        },
-    });
+    let audioPlayer;
+    let subscription;
 
     try {
-        connection.subscribe(audioPlayer);
+        audioPlayer = createAudioPlayer({
+            behaviors: {
+                noSubscriber: NoSubscriberBehavior.Stop,
+            },
+        });
+
+        subscription = connection.subscribe(audioPlayer);
 
         await new Promise((resolve, reject) => {
             audioPlayer.play(createAudioResource(file));
@@ -33,7 +36,8 @@ async function playFileAsync(
             audioPlayer.once(AudioPlayerStatus.Idle, resolve);
         });
     } finally {
-        audioPlayer.stop();
+        subscription?.unsubscribe();
+        audioPlayer?.stop();
     }
 }
 
@@ -56,23 +60,19 @@ export async function playSoundFileAsync(
 
     try {
         if (connection.state.status !== VoiceConnectionStatus.Ready) {
-            log(`Waiting for voice connection to become ready (currently ${connection.state.status})`);
-            await new Promise((resolve, reject) => {
-                connection.once(VoiceConnectionStatus.Ready, resolve);
-                connection.once(VoiceConnectionStatus.Disconnected, () =>
-                    reject(new Error('Voice connection disconnected')),
-                );
-                connection.once(VoiceConnectionStatus.Destroyed, () =>
-                    reject(new Error('Voice connection destroyed')),
-                );
-            });
+            log(
+                `Waiting for voice connection to become ready (currently ${connection.state.status})`,
+            );
+            await entersState(connection, VoiceConnectionStatus.Ready, 5_000);
         }
 
         log(`Playing ${soundFile} in ${voiceChannel.id}`);
         await playFileAsync(connection, soundFile);
     } finally {
         try {
-            log(`Disconnecting from voice channel ${voiceChannel.id}`);
+            log(
+                `Destroying connection to voice channel ${voiceChannel.id} (final state ${connection.state.status})`,
+            );
             await connection.destroy();
         } finally {
             isLocked = false;
