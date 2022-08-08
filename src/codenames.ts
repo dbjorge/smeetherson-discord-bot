@@ -27,13 +27,13 @@ export async function handleCodenamesCommand(msg: Message): Promise<void> {
         );
     }
 
-    await msg.reply(
-        `Playing codenames at https://${codenamesDomain}/buttdestroyer with teams:
+    await msg.channel.send({
+        content: `Playing codenames at https://${codenamesDomain}/buttdestroyer with teams:
 
 :red_circle: **Red team** :red_circle:
 ${format_team_list(red_team_players)}
 
 :blue_heart: **Blue team** :blue_heart:
-${format_team_list(blue_team_players)}`,
-    );
+${format_team_list(blue_team_players)}`
+    });
 }
