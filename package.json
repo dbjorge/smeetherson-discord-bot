@@ -5,6 +5,10 @@
     "description": "Smeetherson: a discord bot for Dan's specific needs",
     "author": "Dan Bjorge <dan@dbjorge.net>",
     "main": "dist/index.js",
+    "engines": {
+        "node": "16.x",
+        "yarn": "1.x"
+    },
     "scripts": {
         "watch": "node_modules/.bin/tsc -w",
         "build": "node_modules/.bin/tsc",
