@@ -8,6 +8,7 @@ import {
 import { handleCodenamesCommand } from './codenames';
 import { handlePogBattleMessage } from './pog-battle';
 import { handleTauntMessage } from './taunts';
+import { startHealthCheckServer } from './health-check-server';
 
 let token: string | undefined = process.env['DISCORD_AUTH_TOKEN'];
 if (token === undefined) {
@@ -51,3 +52,5 @@ registerMessageHandler(bot, handleTauntMessage);
 registerMessageHandler(bot, handlePogBattleMessage);
 
 bot.login(token);
+
+startHealthCheckServer();

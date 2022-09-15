@@ -11,7 +11,7 @@ processes = []
 
 [[services]]
   http_checks = []
-  internal_port = 8080
+  internal_port = 8080 # should match src/health-check-server.ts
   processes = ["app"]
   protocol = "tcp"
   script_checks = []
@@ -25,3 +25,6 @@ processes = []
     interval = "15s"
     restart_limit = 0
     timeout = "2s"
+
+[deploy]
+  strategy = "immediate"
