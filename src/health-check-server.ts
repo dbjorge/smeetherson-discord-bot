@@ -10,11 +10,29 @@ export function startHealthCheckServer() {
     });
     
     server.on('error', (err) => {
-        log('health check server error: ', err);
+        log('health check server: error ', err);
     });
       
     server.listen(HEALTH_CHECK_PORT, () => {
-        log('health check server listening on', server.address());
+        log('health check server: listening on', server.address());
+    });
+
+    server.on('connection', function(socket) {
+        log('health check server: client opened connection');
+
+        socket.write('Hello, fly.io!');
+
+        socket.on('data', function(chunk) {
+            log('health check server: received data:', chunk.toString());
+        });
+
+        socket.on('end', function() {
+            log('health check server: client closed connection');
+        });
+
+        socket.on('error', function(err) {
+            log('health check server: connection.error:', err);
+        });
     });
 
     return server;
