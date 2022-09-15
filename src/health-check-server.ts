@@ -12,16 +12,16 @@ export function startHealthCheckServer() {
     });
       
     server.on('connection', function(socket) {
-        log('health check server: client opened connection');
+        // log('health check server: client opened connection');
 
         socket.write('Hello, fly.io!');
 
         socket.on('data', function(chunk) {
-            log('health check server: received data:', chunk.toString());
+            log('health check server: received (unexpected) data:', chunk.toString());
         });
 
         socket.on('end', function() {
-            log('health check server: client closed connection');
+            // log('health check server: client closed connection');
         });
 
         socket.on('error', function(err) {
