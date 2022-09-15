@@ -20,7 +20,7 @@ WORKDIR /usr/src/bot
 
 COPY package.json yarn.lock .
 RUN yarn install --frozen-lockfile --production
-COPY --from=build /usr/src/bot/dist ./dist
+COPY --from=build /usr/src/bot/dist /usr/src/bot/resources ./dist
 
 # health check server
 EXPOSE 8080
